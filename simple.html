@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+            color: #000;
+        }
+
+        .resume-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        /* Header styles */
+        .header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin: 0;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .header .job-title {
+            font-size: 1rem;
+            color: #555;
+            margin: 0.5rem 0;
+        }
+
+        .contact p {
+            font-size: 0.9rem;
+        }
+
+        /* Section styles */
+        .section {
+            margin: 1.5rem 0;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+            position: relative;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .skills-list {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+
+        .skills-list li {
+            margin: 0.5rem 0;
+        }
+
+        /* Job styles */
+        .job {
+            margin-bottom: 1rem;
+        }
+
+        .job h3 {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .job .company {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Basic animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .resume-container {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .section h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-container">
+        <header class="header">
+            <h1 class="name">John Doe</h1>
+            <p class="job-title">Software Engineer</p>
+            <div class="contact">
+                <p>📞 (123) 456-7890 | ✉️ john.doe@example.com | 🌐 linkedin.com/in/johndoe</p>
+            </div>
+        </header>
+
+        <main class="content">
+            <section class="section">
+                <h2>Summary</h2>
+                <p>
+                    Motivated software engineer with 5+ years of experience in developing web applications and cloud solutions. Skilled in JavaScript, Python, and AWS, with a proven track record of delivering high-quality solutions.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>Skills</h2>
+                <ul class="skills-list">
+                    <li>JavaScript, Python, Java</li>
+                    <li>HTML, CSS, React</li>
+                    <li>AWS, Docker, Kubernetes</li>
+                    <li>MySQL, MongoDB</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Experience</h2>
+                <div class="job">
+                    <h3>Software Engineer</h3>
+                    <p class="company">ABC Tech Solutions | Jan 2020 - Present</p>
+                    <ul>
+                        <li>Developed scalable web applications using React and Node.js.</li>
+                        <li>Implemented cloud solutions, reducing costs by 15%.</li>
+                        <li>Collaborated with cross-functional teams to deliver efficient solutions.</li>
+                    </ul>
+                </div>
+                <div class="job">
+                    <h3>Junior Developer</h3>
+                    <p class="company">XYZ Innovations | Jun 2017 - Dec 2019</p>
+                    <ul>
+                        <li>Created responsive web designs using HTML, CSS, and JavaScript.</li>
+                        <li>Optimized legacy code, improving application speed by 20%.</li>
+                        <li>Maintained databases and assisted in cloud migrations.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Education</h2>
+                <p>Bachelor of Technology in Computer Science | University of Excellence | 2013 - 2017</p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

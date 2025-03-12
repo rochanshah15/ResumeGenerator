@@ -1,0 +1,431 @@
+
+/* Bright Blue Theme */
+body {
+    background-color: #f0f8ff;
+    color: #2c3e50;
+}
+
+.hero-section {
+    background: linear-gradient(180deg, #2196f3 0%, #e3f2fd 100%);
+    color: white;
+    padding: 60px 0;
+    text-align: center;
+    margin-bottom: 50px;
+    border-radius: 12px;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+}
+
+.contact-card,
+.location-card {
+    border: 1px solid #bbdefb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #ffffff;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.contact-card:hover,
+.location-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.country-flag {
+    width: 28px;
+    margin-right: 10px;
+}
+
+.time-zone {
+    color: #546e7a;
+    font-size: 0.9em;
+}
+
+.chat-section {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.chat-button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.chat-button:hover {
+    background-color: #e68900;
+    transform: scale(1.05);
+}
+
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #bbdefb;
+}
+
+.form-control:focus {
+    border-color: #2196f3;
+    box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+}
+
+button[type="submit"] {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #1976d2;
+    transform: scale(1.05);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #e3f2fd;
+    color: #2196f3;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(33, 150, 243, 0.25);
+}
+
+.stat-counter {
+    font-weight: bold;
+    color: #2196f3;
+}
+
+.testimonial {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-author {
+    font-weight: bold;
+    color: #2196f3;
+}
+
+.social-icons {
+    font-size: 24px;
+}
+
+.social-icons a {
+    color: #2196f3;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #1976d2;
+}
+
+
+
+
+/* Footer Styling */
+.footer-section {
+    background-color: lightskyblue;
+    color: #333;
+    border-top: 2px solid #e3eaf3;
+    padding: 40px 0;
+    font-family: Arial, sans-serif;
+    }
+    
+    .footer-section h3 {
+    color: #3b82f6; /* Light Blue */
+    font-weight: 600;
+    margin-bottom: 10px;
+    }
+    
+    .footer-section .text-grey {
+    color: #6c757d;
+    }
+    
+    .footer-section .text-blue {
+    color: #3b82f6;
+    }
+    
+    .footer-section .footer-link {
+    transition: color 0.3s ease;
+    }
+    
+    .footer-section .footer-link:hover {
+    color: #0056b3; /* Darker Blue */
+    }
+    
+    .footer-section .social-icons a {
+    color: #3b82f6;
+    transition: color 0.3s ease;
+    }
+    
+    .footer-section .social-icons a:hover {
+    color: #0056b3;
+    }
+    
+    .footer-section .icon i {
+    color: #3b82f6;
+    font-size: 1.8rem;
+    }
+    
+    .footer-section .site-logo {
+    color: #333;
+    font-size: 1.5rem;
+    }
+    
+    .footer-section .site-logo .site-logo-text {
+    color: #333;
+    font-weight: 700;
+    }
+    
+    .copyright-text {
+    background-color: whitesmoke;
+    color: #6c757d;
+    font-size: 0.9rem;
+    }
+    /* Smooth background and shadow transition on navbar hover */
+.navbar {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Logo effect with subtle scale and shadow */
+    .logo {
+    transition: transform 0.3s ease, box-shadow 0.2s ease;
+    }
+    
+    .logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Navbar link hover effect with subtle underline animation */
+    /*.nav-link {
+    transition: color 0.3s ease, transform 0.2s ease;
+    }*/
+    
+    .nav-link {
+    position: relative;
+    transition: all 0.3s ease; /* Smooth transition */
+    color: inherit;  /* Keep the text color the same */
+    border: 2px solid transparent; /* Transparent border by default */
+    padding: 8px 16px;  /* Padding for spacing */
+    border-radius: 4px;  /* Rounded corners for a smooth look */
+    }
+    
+    .nav-link:hover {
+    transform: translateY(-2px); /* Subtle lift effect on hover */
+    border-color: rgba(144, 169, 244, 1); /* Light border color on hover */
+    box-shadow: 0 0 5px rgba(144, 169, 244, 0.4);  /* Subtle soft glow */
+    }
+    
+    /* Optional: Focus effect for accessibility */
+    .nav-link:focus {
+    outline: none;
+    border-color: rgba(144, 169, 244, 1); /* Light border color when focused */
+    box-shadow: 0 0 8px rgba(144, 169, 244, 0.5);  /* Focus glow */
+    }
+    
+    
+    /* Dropdown menu slide in with smooth fade */
+    .dropdown-menu {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .dropdown-menu.show {
+    opacity: 1;
+    transform: translateY(0);
+    }
+    
+    /* Subtle button hover effect */
+    .btn-login,
+    .btn-outline-info {
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    
+    .btn-login:hover,
+    .btn-outline-info:hover {
+    background-color: #4e73df;
+    color: #fff;
+    transform: scale(1.05);
+    }
+    
+    /* Smooth fade-in animation for navbar on page load */
+    .navbar {
+    animation: fadeIn 0.8s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+    }
+    
+    .btn-login {
+        background-color: #fff;
+        color: #00acc1;
+        border: none;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        transition: background 0.3s ease, color 0.3s ease;
+    }
+    
+    .btn-login:hover {
+        background-color: #00acc1;
+        color: #fff;
+    }
+    .nav-link.active {
+        background-color: #4e73df;
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        background-color: #6e8bff;
+        color: white;
+    }
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-btn {
+        background-color: white;
+        color: #007bff; /* Aesthetic Blue */
+        border: 2px solid #007bff;
+        padding: 10px 16px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        outline: none;
+        box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+        text-decoration: none;
+        
+        /* Ensuring Equal Size */
+        width: 100px; /* Adjust width as needed */
+        height: 45px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        }
+        
+        /* Hover Effect */
+        .custom-btn:hover {
+        background-color: #007bff;
+        color: white;
+        box-shadow: 0 5px 10px rgba(0, 123, 255, 0.4);
+        }
+        
+        /* Active (Click Effect) */
+        .custom-btn:active {
+        transform: scale(0.95);
+        }
+
+        .custom-btnnnn{
+            background-color: white;
+            color: #007bff; /* Aesthetic Blue */
+            border: 2px solid #007bff;
+            padding: 10px 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            outline: none;
+            box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+            text-decoration: none;
+            
+            /* Ensuring Equal Size */
+            width: 160px; /* Adjust width as needed */
+            height: 45px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            }
+            .custom-btnnnn:hover {
+            background-color: #007bff;
+            color: white !important;
+            box-shadow: 0 5px 10px rgba(0, 123, 255, 0.4);
+            }
+            
+            /* Active (Click Effect) */
+            .custom-btnnnn:active {
+            color : white !important;
+            transform: scale(0.95);
+            }
+            .custom-btnnn{
+                background-color: white;
+                color: #007bff; /* Aesthetic Blue */
+                border: 2px solid #007bff;
+                padding: 10px 16px;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+                outline: none;
+                box-shadow: 0 3px 6px rgba(0, 123, 255, 0.2);
+                text-decoration: none;
+                
+                /* Ensuring Equal Size */
+                width: 160px; /* Adjust width as needed */
+                height: 45px;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                }
+                .custom-btnnn:hover {
+                background-color: #007bff;
+                color: white !important;
+                box-shadow: 0 5px 10px rgba(0, 123, 255, 0.4);
+                }
+                
+                /* Active (Click Effect) */
+                .custom-btnnn:active {
+                color : white !important;
+                transform: scale(0.95);
+                }
+                          

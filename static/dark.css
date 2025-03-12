@@ -1,0 +1,223 @@
+/* Global Dark Mode Styles */
+.body{
+    background-color:  #181818;
+}
+body.dark-mode {
+    background-color: #181818; /* Slightly lighter dark for better contrast */
+    color: #e0e0e0; /* Softer light text for readability */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+body.dark-mode .body{
+    background-color: #0f0f0f;
+}
+/* Navbar in Dark Mode */
+body.dark-mode .navbar {
+    background-color: #242424;
+    color: #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .navbar a.nav-link {
+    color: #cccccc;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .navbar a.nav-link:hover {
+    color: #ffffff;
+}
+
+/* Homepage Banner in Dark Mode */
+body.dark-mode .homepage-banner {
+    background: linear-gradient(135deg, #202020, #2c2c2c);
+    color: #f5f5f5;
+    border: 1px solid #333333;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+body.dark-mode .homepage-banner h1 {
+    color: #ffffff;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+body.dark-mode .homepage-banner p {
+    color: #dcdcdc;
+}
+
+body.dark-mode .homepage-banner .custom-btn {
+    background-color: #353535;
+    color: #ffffff;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+body.dark-mode .homepage-banner .custom-btn:hover {
+    background-color: #454545;
+    transform: scale(1.05);
+    color: #f5f5f5;
+}
+
+/* Carousel in Dark Mode */
+body.dark-mode .carousel-container {
+    background-color: #242424;
+    color: #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+body.dark-mode .carousel-item img {
+    border: 2px solid #555555;
+    background-color: #2a2a2a;
+    border-radius: 6px;
+}
+
+/* Steps Section in Dark Mode */
+body.dark-mode .steps-item-icon {
+    background-color: #353535;
+    color: #ffffff;
+    border-radius: 50%;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode .steps-item-icon:hover {
+    background-color: #444444;
+}
+
+body.dark-mode .steps-item-text h3 {
+    color: #f5f5f5;
+    font-weight: bold;
+}
+
+body.dark-mode .steps-item-text p {
+    color: #cccccc;
+}
+
+/* Footer in Dark Mode */
+body.dark-mode .footer-section {
+    background-color: #1f1f1f;
+    color: #d3d3d3;
+    border-top: 1px solid #333333;
+    padding: 20px;
+    text-align: center;
+}
+
+body.dark-mode .footer-section h3 {
+    color: #9acbff;
+    font-weight: bold;
+}
+
+body.dark-mode .footer-section a {
+    color: #9acbff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .footer-section a:hover {
+    color: #ffc766;
+}
+
+body.dark-mode .copyright-text {
+    background-color: #1a1a1a;
+    color: #a8a8a8;
+    padding: 10px;
+}
+
+/* Buttons in Dark Mode */
+body.dark-mode button {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border: 1px solid #3e3e3e;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body.dark-mode button:hover {
+    background-color: #3c3c3c;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Modals in Dark Mode */
+body.dark-mode .modal-content {
+    background-color: #292929;
+    color: #f0f0f0;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+body.dark-mode .modal-header {
+    background-color: #353535;
+    border-bottom: 1px solid #444444;
+}
+
+body.dark-mode .modal-footer {
+    background-color: #353535;
+    border-top: 1px solid #444444;
+}
+
+/* Default Links in Dark Mode */
+body.dark-mode a {
+    color: #9acbff;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode a:hover {
+    color: #ffc766;
+}
+
+/* Section Styles */
+body.dark-mode #explore,
+body.dark-mode #resumeCarousel,
+body.dark-mode .carousel-container {
+    background: linear-gradient(135deg, #232222, #1f1f1f);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode #ai-faqs,
+body.dark-mode #ai-container {
+    background: linear-gradient(135deg, #1f1f1f, #1f1f1f);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .flip_text {
+    background: linear-gradient(135deg, #2e2d2d, #1f1f1f);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .templates {
+    background: linear-gradient(135deg, #2c2c2c, #232222);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+body.dark-mode .footercss{
+    color:white;
+}
+body.dark-mode .footer-section .site-logo {
+    color: white;
+    font-size: 1.5rem;
+}
+
+body.dark-mode .footer-section .site-logo .site-logo-text {
+    color: white;
+    font-weight: 700;
+}
+
+

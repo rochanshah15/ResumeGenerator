@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- fontawesome cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- google fonts - inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="static/dark.css">
+    <link rel="stylesheet" href="static/index.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- <script src="static/firebaseauth.js"></script> -->
+<script src="static/modalValidate.js"></script>
+<script type="module">
+// Import Firebase SDKs
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDYbJ04ri_3PvCp7WG52zgf7a4NZooyHrU",
+    authDomain: "nextlevel-resume-b7569.firebaseapp.com",
+    projectId: "nextlevel-resume-b7569",
+    storageBucket: "nextlevel-resume-b7569.firebasestorage.app",
+    messagingSenderId: "797149538947",
+    appId: "1:797149538947:web:0d9545526ead364c74c9b6",
+    measurementId: "G-LCGM1YE76S"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Helper function to generate initials from a name
+function generateInitials(name) {
+    const nameParts = name.split(" ");
+    const initials = nameParts.map(part => part.charAt(0).toUpperCase()).join("");
+    return initials.substring(0, 2); // Limit to two characters
+}
+
+// Signup Function
+async function signUp(event) {
+    event.preventDefault();
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Extract name from email (before the @) if name isn't provided
+        const name = email.split("@")[0];
+
+        // Add user to Firestore with email, name, and generated initials
+        await setDoc(doc(db, "users", user.uid), {
+            email: email,
+            name: name,
+            initials: generateInitials(name),
+            createdAt: new Date()
+        });
+
+        alert("Signup successful!");
+        // Redirect to the demo page and pass user info via query params
+        window.location.href = `/index.html?name=${name}`;
+    } catch (error) {
+        if (error.code === "auth/email-already-in-use") {
+            alert("Email already in use. Please log in or use a different email.");
+        } else {
+            console.error("Signup Error:", error.message);
+            alert(error.message);
+        }
+    }
+}
+
+// Login Function
+async function login(event) {
+    event.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Fetch user data from Firestore to get their initials
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const name = userData.name;
+            const initials = userData.initials;
+
+            alert("Login successful!");
+            // Redirect to the demo page and pass user info via query params
+            window.location.href = `/index.html?name=${name}&initials=${initials}`;
+        } else {
+            throw new Error("User data not found in Firestore.");
+        }
+    } catch (error) {
+        console.error("Login Error:", error.message);
+        alert(error.message);
+    }
+}
+
+// Google Sign-Up/Sign-In Function
+async function signUpWithGoogle() {
+    const provider = new GoogleAuthProvider();
+
+    try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+
+        // Generate initials from the user's display name
+        const initials = generateInitials(user.displayName);
+
+        // Add user to Firestore
+        const docRef = doc(db, "users", user.uid);
+        await setDoc(docRef, {
+            email: user.email,
+            name: user.displayName,
+            photoURL: user.photoURL,
+            initials: initials,
+            createdAt: new Date()
+        }, { merge: true });
+
+        alert("Google Sign-In successful!");
+        // Redirect to the demo page and pass user info via query params
+        window.location.href = `/index.html?name=${user.displayName}&initials=${initials}`;
+    } catch (error) {
+        console.error("Google Sign-In Error:", error.message);
+        alert(error.message);
+    }
+}
+
+// Attach Event Listeners
+document.getElementById("signup-form").addEventListener("submit", signUp);
+document.getElementById("login-form").addEventListener("submit", login);
+document.getElementById("google-signup-btn").addEventListener("click", signUpWithGoogle);
+/*document.getElementById("google-login-btn").addEventListener("click", signUpWithGoogle);*/
+</script>
+</head>
+<title>NextLevel Resume</title>
+<body class="body">
+    <nav class="navbar navbar-expand-lg" id="header">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="images/final_logo-removebg-preview.png" alt="NextLevel Resume Logo" style="height: 90px; width: auto; margin-right: 0;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item rounded"><a class="nav-link rounded" href="index.html">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resume Templates</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="creativegen.html"><i>Professional Template</i></a></li>
+                            <li><a class="dropdown-item" href="Nopicgenerate.html"><i>Simple Template</i></a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#explore">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#ai-faqs"><b>FAQ</b></a></li>
+                </ul>
+    
+                <div class="btn-container d-flex align-items-center">
+                    <button class="btn btn-outline-info me-2 custom-btnnn">My Templates</button>
+                    <!-- Contact Us -->
+                    <a class="custom-btnnnn me-2" style="text-decoration : none" href="contactus.html" >Contact Us</a>
+                
+                    <!-- Auth Section -->
+                    <div id="auth-section" class="d-flex align-items-center">
+                        <!-- Default: Login Button -->
+                        <button class="btn-login me-2 custom-btn" data-bs-toggle="modal" data-bs-target="#loginModal" id="login_main" onclick="login()" style="border:1px solid  #007bff; border-width :2px;"><b>Login</b></button>
+
+                        <button onclick="logout()" id="logout-btn" class="btn-login rounded me-2 custom-btn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    
+    <!-- Content Section -->
+    <section class="homepage-banner">
+        <div class="banner-content">
+            <div class="banner-text">
+                <h1>Job-Winning Resume Templates</h1>
+                <p>
+                    Each resume template is designed to follow the exact rules you need to get hired faster. 
+                    Use our resume templates and get free access to more career tools!
+                </p>
+                <a href="generate.html" class="custom-btnn"><b>Build Resume</b></a>
+            </div>
+            <div class="banner-image">
+                <img src="images/Basic.jpg" alt="Resume Templates Preview" height="50px">
+            </div>
+        </div>
+    </section>
+    
+    <div class="resume-slider-container">
+        <div class="resume-slider-content">
+            <h2 class="resume-slider-title">Explore Our Resume Templates</h2>
+            <p class="resume-slider-text">
+                Get a professional, job-winning resume with our modern templates. 
+                Designed to stand out and get you hired faster!
+            </p>
+        </div>
+    
+        <div class="resume-slider-wrapper">
+            <div class="resume-slider-track">
+                <img src="images/res1.webp" alt="Template 1">
+                <img src="images/res2.webp" alt="Template 2">
+                <img src="images/res3.webp" alt="Template 3">
+                <img src="images/res4.webp" alt="Template 4">
+                <img src="images/res5.webp" alt="Template 5">
+                <!-- Duplicate images for smooth infinite effect -->
+                <img src="images/res7.webp" alt="Template 1">
+                <img src="images/res2.webp" alt="Template 2">
+                <img src="images/res3.webp" alt="Template 3">
+                <img src="images/res4.webp" alt="Template 4">
+                <img src="images/res6.webp" alt="Template 5">
+            </div>
+        </div>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Welcome</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button">Login</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button">Sign Up</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content mt-3">
+                    <!-- Login Form -->
+                    <div class="tab-pane fade show active" id="login">
+                        <form id="login-form">
+                            <div class="mb-3">
+                                <label for="loginEmail" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="loginPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
+                            </div>
+
+                            <div class="mb-3 text-end">
+                                <a href="#" class="text-muted" onclick="resetPassword()">Forgot password?</a>
+                            </div>                            
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                            <!-- <div class="d-flex align-items-center my-2"> -->
+                                <!-- <hr class="flex-grow-1"> <span class="mx-2">or</span> <hr class="flex-grow-1">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 " id="google-login-btn" >login with google</button> -->
+                        </form>
+                    </div>
+
+                    <!-- Sign Up Form -->
+                    <div class="tab-pane fade" id="signup">
+                        <form id="signup-form">
+                            <div class="mb-3">
+                                <label for="signupName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="signupName" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="signupEmail" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="signupPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="signupPassword" placeholder="Create a password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                            <div class="d-flex align-items-center my-2">
+                                <hr class="flex-grow-1"> <span class="mx-2">or</span> <hr class="flex-grow-1">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 " id="google-signup-btn">Sign Up with google</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p class="text-muted small w-100 text-center">By logging in or signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>    
+    
+<!-- AI FAQs Section -->
+<section id="ai-faqs">
+  <div id = "ai-container">
+    <h1 style="font-size: 2.8rem; margin-bottom: 20px; font-weight: bold; letter-spacing: 1px;">FAQs with AI</h1>
+    <p style="font-size: 1.3rem; margin-bottom: 30px; font-weight: 300;">Get instant answers to your questions using AI. Simplify your job search and resume-building process!</p>
+    
+    <!-- Enhanced Button Design -->
+    <button style="
+      padding: 15px 30px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #20cbfa, #076fef);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    "
+    onmouseover="this.style.transform='scale(1.1)'"
+    onmouseout="this.style.transform='scale(1)'">
+      <a href="faq.html" style="color: white; text-decoration: none;">Ask Your Questions with AI</a>
+    </button>
+  </div>
+</section>
+
+
+<section class = "steps py-8" id="explore">
+    <div class="container">
+        <div class = "row section-title text-center">
+            <div class = "col-12">
+                <h2 class = "display-6 text-blue fw-bold">Create your perfect Resume with easy steps</h2>
+                <p class = "text-grey fs-4 my-4 mx-auto">Effortlessly make a job-worthy resume and cover letter that gets you hired faster.</p>
+            </div>
+        </div>
+
+        <div class = "row steps-list">
+            <div class = "steps-item col-lg-6 col-xl-4 text-center text-md-start my-4 d-md-flex align-items-md-center">
+                <div class = "steps-item-icon text-white bg-light-blue d-flex align-items-center justify-content-center mx-auto ms-md-0 me-md-5 me-lg-4">
+                    <i class = "fa-solid fa-layer-group fa-2x iconclr" ></i>
+                </div>
+                <div class="steps-item-text mt-4">
+                    <h3 class = "fs-3 fw-4 text-blue">Choose your CV template</h3>
+                    <p class = "text-grey fs-18">Pick a template and color of your choice from a variety of professional templates.</p>
+                </div>
+            </div>
+
+            <div class = "steps-item col-lg-6 col-xl-4 text-center text-md-start my-4 d-md-flex align-items-md-center">
+                <div class = "steps-item-icon text-white bg-light-blue d-flex align-items-center justify-content-center mx-auto ms-md-0 me-md-5 me-lg-4">
+                    <i class = "fa-solid fa-file-lines fa-2x iconclr"></i>
+                </div>
+                <div class="steps-item-text mt-4">
+                    <h3 class = "fs-3 fw-4 text-blue">Place Your Information</h3>
+                    <p class = "text-grey fs-18" >Keep track of your CV with the help of live preview.</p>
+                </div>
+            </div>
+
+            <div class = "steps-item col-lg-6 col-xl-4 text-center text-md-start my-4 d-md-flex align-items-md-center">
+                <div class = "steps-item-icon text-white bg-light-blue d-flex align-items-center justify-content-center mx-auto ms-md-0 me-md-5 me-lg-4">
+                    <i class = "fa-solid fa-download fa-2x iconclr"></i>
+                </div>
+                <div class="steps-item-text mt-4">
+                    <h3 class = "fs-3 fw-4 text-blue">Instantly download your CV</h3>
+                    <p class = "text-grey fs-18">Easily download your CV as a PDF and share it via a link.</p>
+                </div>
+            </div>
+        </div>
+            <a href="resources.html"><button type="button" class="rounded mx-auto d-block center-div"><b>Explore Resources</b></button></a>          
+    </div>
+</section>
+  
+<div class="flip_text p-3">
+  <div class="containerss">
+      <div class="row align-items-center">
+          <!-- Text Column -->
+          <div class="col-lg-6 mb-4 text-center text-lg-start">
+              <h1 class="header-text">Build Your <span class="highlight text-warning">Resume</span> with Ease</h1>
+              <p class="text-light">
+                  Create a standout resume tailored to your unique strengths. Join thousands of professionals landing jobs at top companies.
+              </p>
+              <div class="button-group">
+                  <a href="generate.html" class="btn btn-primary btn-lg">Build Your Resume</a>
+                  <a href="#" class="btn btn-outline-light btn-lg">Get Your Resume Score</a>
+              </div>
+          </div>
+  
+          <!-- Flip Card Column -->
+          <div class="col-lg-6">
+              <div class="flip">
+                  <div class="card-container">
+                      <div class="flippable-card">
+                          <!-- Front Side (Resume Header) -->
+                          <div class="card-side front">
+                              <img src="images/creative.jpg" alt="John Doe" class="photo">
+                              <h2>Rochan Shah</h2>
+                              <p>SOFTWARE DEVELOPER</p>
+                              <p>Passionate about design and bringing ideas to life through CODE. Specialized in PYTHON, UI/UX, and DJANGO</p>
+                          </div>
+                          <!-- Back Side (Contact Info & Skills) -->
+                          <div class="card-side back">
+                              <h3>Contact Info</h3>
+                              <p class="contact-info"><i class="fas fa-envelope"></i> ROCHAN@example.com</p>
+                              <p class="contact-info"><i class="fas fa-phone-alt"></i> +1 234 567 890</p>
+                              <p class="contact-info"><i class="fab fa-linkedin"></i> linkedin.com/in/ROCHAN</p>
+  
+                              <h4>Key Skills</h4>
+                              <ul class="skills">
+                                  <li>HTML</li>
+                                  <li>CSS</li>
+                                  <li>JS</li>
+                                  <li>PYTHON</li>
+                                  <li>JAVA</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+  <section class="hired-carousel">
+    <h3 class="carousel-title">Our customers have been hired at</h3>
+    <div class="carousel-wrapper">
+        <div class="carousel-track">
+            <img src="svg/hire2.svg" alt="Company 2">
+            <img src="svg/hire3.svg" alt="Company 3">
+            <img src="svg/hire4.svg" alt="Company 4">
+            <img src="svg/hire5.svg" alt="Company 5">
+            <img src="svg/hire1.svg" alt="Company 1">
+            <!-- Duplihire logos for smooth looping -->
+            <img src="svg/hire1.svg" alt="Company 1">
+            <img src="svg/hire2.svg" alt="Company 2">
+            <img src="svg/hire3.svg" alt="Company 3">
+            <img src="svg/hire4.svg" alt="Company 4">
+            <img src="svg/hire5.svg" alt="Company 5">
+
+            <img src="svg/hire1.svg" alt="Company 1">
+            <img src="svg/hire2.svg" alt="Company 2">
+            <img src="svg/hire3.svg" alt="Company 3">
+            <img src="svg/hire4.svg" alt="Company 4">
+            <img src="svg/hire5.svg" alt="Company 5">
+        </div>
+    </div>
+</section>
+
+
+<!-- Reviews Section -->
+<section class="reviews-section">
+    <div class="container">
+        <div class="row align-items-center">
+            
+            <!-- Left Side: Trusted by Professionals -->
+            <div class="col-md-4 trusted-section">
+                <h2>Reviewed by the community.<br> Trusted by professionals</h2>
+
+                <!-- Trustpilot Rating -->
+                <div class="trustpilot-rating mt-3">
+                    <span class="stars">
+                        ★★★★★
+                        <span style="color: #ccc;">☆</span> <!-- Half Star -->
+                    </span>
+                    <p class="mt-2">4.5 out of 5</p>
+                    <p><i class="fas fa-check-circle text-success"></i> Trustpilot based on 53,053 reviews</p>
+                </div>
+            </div>
+
+            <!-- Right Side: Reviews Carousel (Auto-slide, No Controls) -->
+            <div class="col-md-8">
+                <div id="customReviewsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+                    <div class="carousel-inner">
+
+                        <!-- Review 1 -->
+                        <div class="carousel-item active">
+                            <div class="review-card">
+                                <span class="stars">★★★★★</span>
+                                <h5>Such an easy interface</h5>
+                                <p>Such an easy interface. This platform makes professional resumes a breeze! Highly recommend!</p>
+                                <p class="text-muted">- ROCHAN SHAH • about 5 hours ago</p>
+                            </div>
+                        </div>
+
+                        <!-- Review 2 -->
+                        <div class="carousel-item">
+                            <div class="review-card">
+                                <span class="stars">★★★★★</span>
+                                <h5>The 7-day trial was converted</h5>
+                                <p>The 7-day trial was converted to a month.</p>
+                                <p class="text-muted">- VIRAJ SHAH • about 18 hours ago</p>
+                            </div>
+                        </div>
+
+                        <!-- Review 3 -->
+                        <div class="carousel-item">
+                            <div class="review-card">
+                                <span class="stars">★★★★☆</span>
+                                <h5>It's fast which is the need...</h5>
+                                <p>It's fast which is the need of time. But the payment process troubled me.</p>
+                                <p class="text-muted">- MEET SHAH • 1 day ago</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2>Get hired fast with a powerful resume</h2>
+
+        <div class="row mt-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="fas fa-file-alt feature-icon"></i>
+                    <div class="feature-text">
+                        <h5>A better resume in minutes</h5>
+                        <p>Replace your old resume in a few simple clicks. Our builder gives recruiters what they want.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <div class="feature-text">
+                        <h5>ATS-friendly templates</h5>
+                        <p>Tick every box and make sure your resume is never filtered out by the hiring software.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="col-md-4">
+                <div class="feature-item">
+                    <i class="fas fa-pen feature-icon"></i>
+                    <div class="feature-text">
+                        <h5>Pre-written content</h5>
+                        <p>Stop worrying about words. Save time by adding pre-approved, tested content from certified writers.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="col-md-4 mt-3">
+                <div class="feature-item">
+                    <i class="fas fa-magic feature-icon"></i>
+                    <div class="feature-text">
+                        <h5>Easy with AI</h5>
+                        <p>Quickly generate formal phrases and summaries. Sound professional, faster.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="col-md-4 mt-3">
+                <div class="feature-item">
+                    <i class="fas fa-chart-line feature-icon"></i>
+                    <div class="feature-text">
+                        <h5>Beat the competition</h5>
+                        <p>Our tested resume templates are designed to make you more attractive to recruiters.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="col-md-4 mt-3">
+                <div class="feature-item">
+                    <i class="fas fa-money-bill-wave feature-icon"></i>
+                    <div class="feature-text">
+                        <h5>Get paid more</h5>
+                        <p>A higher salary begins with a strong resume. Our salary analyzer tells you if your job offer is competitive.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <section class = "templates py-8 bg-info">
+    <div class = "container">
+        <div class = "row section-title text-center mb-5">
+            <div class = "col-12">
+                <h2 class = "display-6 text-blue fw-bold">Here are the Best Templates for you</h2>
+                <p class = "text-grey fs-4 my-4 mx-auto">A great job application leads to a good interview. An amazing resume is what makes it all possible.</p>
+            </div>
+        </div>
+
+        <div class = "row templates-list gy-5 gx-lg-5">
+            <div class = "templates-item position-relative col-lg-6">
+                <div class = "template-item-img mx-auto me-lg-0 position-relative">
+                    <img src = "images/Basic.jpg" alt = "" class = "img-fluid">
+                    <a href = "templates/creative.html" class = "btn btn-lg btn-primary position-absolute choose-template-btn">Preview</a>
+                </div>
+            </div>
+
+            <div class = "templates-item position-relative col-lg-6">
+                <div class = "template-item-img mx-auto ms-lg-0 position-relative">
+                    <img src = "images/College.jpg" alt = "" class = "img-fluid">
+                    <a href = "templates/simple.html" class = "btn btn-lg btn-primary position-absolute choose-template-btn">Preview</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+<!-- <a href="contactus.html" class="btn btn-primary position-fixed" style="bottom: 20px; right: 20px; z-index: 1000;">Contact Us</a> -->
+<!-- <a id="darkModeToggle" class="btn btn-outline-secondary custom-btn btn-primary position-fixed" style="bottom: 20px; right: 20px; z-index: 1000;">🌙 Dark</a> -->
+<footer class="pt-5 footer-section">
+    <div class="container my-4 footercss">
+        <div class="row gy-5 gx-md-5 text-center text-md-start">
+            <!-- Brand Section -->
+            <div class="col-md-6 col-xl-4">
+                <a class="site-logo text-decoration-none fw-bold fs-2 d-flex align-items-center mb-3" href="#">
+                    <span class="icon me-2">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </span>
+                    <span class="site-logo-text">NextLevel</span> <span class="text-blue">Resume</span>
+                </a>
+                <p class="text-grey fs-18">NextLevel Resume is a CV builder that helps users like you create stunning CVs within minutes.Transform your career with professional, eye-catching CVs tailored effortlessly to make you stand out.</p>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="col-md-6 col-xl-2">
+                <h3 class="text-blue">NextLevel</h3>
+                <ul class="list-unstyled mt-4">
+                    <li class="my-2">
+                        <a href="#" class="text-decoration-none fs-17 text-dark footer-link">Homepage</a>
+                    </li>
+                    <li class="my-2">
+                        <a href="#" class="text-decoration-none fs-17 text-dark footer-link">CV Builder</a>
+                    </li>
+                    <li class="my-2">
+                        <a href="#" class="text-decoration-none fs-17 text-dark footer-link">CV Templates</a>
+                    </li>
+                    <li class="my-2">
+                        <a href="#" class="text-decoration-none fs-17 text-dark footer-link">Login</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Legal Section -->
+            <div class="col-md-6 col-xl-2">
+                <h3 class="text-blue">Legal</h3>
+                <ul class="list-unstyled mt-4">
+                    <li class="my-2">
+                        <a href="#" class="text-decoration-none fs-17 text-dark footer-link">Privacy Policy</a>
+                    </li>
+                    <li class="my-2">
+                        <a href="#" class="text-decoration-none fs-17 text-dark footer-link">Use of Terms</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Help Center -->
+            <div class="col-md-6 col-xl-4">
+                <h3 class="text-blue">Help Center</h3>
+                <p class="fs-17 mt-3">Contact us at: 
+                    <a href="mailto:support@buildcv.com" class="text-decoration-none text-blue">
+                        support@NextLevelResume.com
+                    </a>
+                </p>
+                <div class="social-icons mt-3">
+                    <a href="#" class="me-3 text-blue"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                    <a href="#" class="me-3 text-blue"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                    <a href="https://www.linkedin.com/in/rochan-shah-974766279/" class="me-3 text-blue"><i class="fa-brands fa-linkedin fa-lg"></i></a>
+                    <a href="#" class="text-blue"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright Section -->
+    <div class="container-fluid copyright-text pt-4 pb-3 bg-light-blue">
+        <p class="text-center fw-3 fs-17 text-grey">
+            &copy; 2025 NextLevelResume. All rights reserved.
+        </p>
+    </div>
+</footer>    
+    <script src="static/dark.js"></script>
+    <script src="static/scrollreveal.min.js"></script>
+    <script src="static/scrollreveal.js"></script>
+
+    <!-- login logout logic code -->
+    <script>
+        // Function to handle logout
+        function login(){
+            localStorage.setItem("isLoggedIn","true");
+        }
+        function logout() {
+            const loginButton = document.getElementById("login_main");
+            const logoutButton = document.getElementById("logout-btn");
+    
+            // Hide the logout button and show the login button
+            logoutButton.style.display = "none";
+            loginButton.style.display = "block";
+    
+            // Clear the login state in localStorage
+            localStorage.removeItem("isLoggedIn");
+        }
+        // Set "isLoggedIn" to false if not already set in localStorage
+
+
+// Function to check login state on page load
+function checkLoginState() {
+   /* localStorage.clear();
+console.log("All local storage cleared!");*/
+    if (localStorage.getItem("isLoggedIn") === null) {
+        localStorage.setItem("isLoggedIn", "false");
+    }
+    const loginButton = document.getElementById("login_main");
+    const logoutButton = document.getElementById("logout-btn");
+
+    // Check the "isLoggedIn" state from localStorage
+    if (localStorage.getItem("isLoggedIn") === "true") {
+        // User is logged in
+        loginButton.style.display = "none"; // Hide login button
+        logoutButton.style.display = "block"; // Show logout button
+    } else {
+        // User is logged out
+        loginButton.style.display = "block"; // Show login button
+        logoutButton.style.display = "none"; // Hide logout button
+    }
+}
+
+// Call checkLoginState on page load
+document.addEventListener("DOMContentLoaded", checkLoginState);
+/*window.onload = checkLoginState;*/
+    </script>
+
+</body>
+</html>
+
+
+<!-- 
+AOS (Animate On Scroll)
+✔ Uses HTML attributes, minimal JavaScript required.
+✔ Easy to use, great for beginners.
+✔ Provides predefined animations like fade, slide, zoom, etc.
+✔ Supports scroll-based animations, but with limited control.
+✔ Lightweight and simple integration.
+✔ Best for basic animations without complex interactions.
+
+ScrollReveal
+✔ Uses JavaScript, requires coding knowledge.
+✔ More flexible, allows custom animations.
+✔ Provides fine control over animation timing, distance, and delay.
+✔ Supports sequential and staggered animations for elements appearing in order.
+✔ Lightweight and performant for scroll-based effects.
+✔ Best for custom scroll animations with more control. -->

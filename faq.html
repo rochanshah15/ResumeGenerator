@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Integration</title>
+    <style>
+        /* Reset and global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #bce7ed, #7cd3fc); /* Light blue gradient */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            background-color: #33b1f5;
+            color: white;
+            text-align: center;
+            padding: 5px 0;
+            font-size: 14px;
+        }
+
+        .chatbot-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-shape {
+            position: absolute;
+            top: 5%;
+            left: -10%;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            filter: blur(40px); /* Soft blur for aesthetic effect */
+            z-index: 0;
+        }
+
+        .background-shape2 {
+            position: absolute;
+            bottom: -15%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            filter: blur(50px);
+            z-index: 0;
+        }
+
+        .background-shape3 {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            filter: blur(30px);
+            z-index: 0;
+        }
+
+        iframe {
+            width: 90%; /* Slightly wider iframe */
+            max-width: 1900px; /* Increased maximum width */
+            height: 80vh;
+            border: 2px solid #ddd;
+            border-radius: 15px; /* Slightly larger border radius for smoother look */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive design for smaller screens */
+        @media screen and (max-width: 600px) {
+            iframe {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><b>CHAT WITH OUR AI</b></h1>
+    </header>
+
+    <div class="chatbot-container">
+        <!-- Decorative background shapes -->
+        <div class="background-shape"></div>
+        <div class="background-shape2"></div>
+        <div class="background-shape3"></div>
+
+        <!-- Chatbot iframe -->
+        <iframe
+            src="https://www.chatbase.co/chatbot-iframe/iH3Ux9hZ1UJ2yWBBueCO8"
+            frameborder="0"
+            allow="clipboard-write"
+        ></iframe>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Chatbot Company</p>
+    </footer>
+</body>
+</html>

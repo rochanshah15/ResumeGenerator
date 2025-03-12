@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS-Friendly Resume</title>
+    <style>
+        /* Base styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f4f7fc;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.resume-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1s ease-out;
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 280px;
+    background-color: #3da9f1;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+    position: relative;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: scaleUp 0.6s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+.name {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.name:hover {
+    color: #ffd700;
+}
+
+.job-title {
+    font-size: 1.1rem;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
+
+.job-title:hover {
+    color: #ffd700;
+}
+
+.contact, .social {
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.contact p, .social p {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #e0f7fa;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.contact p:hover, .social p:hover {
+    color: #ffd700;
+    transform: translateX(10px);
+}
+
+.icon {
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}
+
+.icon:hover {
+    color: #ffd700;
+}
+
+/* Main content styles */
+.main-content {
+    flex-grow: 1;
+    margin-left: 30px;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: 0.4s;
+}
+
+.section {
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: topToBottom 0.7s ease-out forwards;
+}
+
+.section:nth-child(1) {
+    animation-delay: 0.6s;
+}
+
+.section:nth-child(2) {
+    animation-delay: 0.8s;
+}
+
+.section:nth-child(3) {
+    animation-delay: 1s;
+}
+
+.section:nth-child(4) {
+    animation-delay: 1.2s;
+}
+
+.section:nth-child(5) {
+    animation-delay: 1.4s;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #3da9f1;
+    font-weight: bold;
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #ffd700;
+    transition: width 0.3s ease;
+}
+
+h2:hover {
+    color: #ffd700;
+}
+
+h2:hover::after {
+    width: 100%;
+}
+
+p, ul {
+    font-size: 1rem;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+p:hover, ul:hover {
+    color: #3da9f1;
+}
+
+.skills-list, .certifications-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.skills-list li, .certifications-list li {
+    margin-bottom: 10px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.skills-list li::before, .certifications-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #3da9f1;
+    transition: color 0.3s ease;
+}
+
+.skills-list li:hover::before, .certifications-list li:hover::before {
+    color: #ffd700;
+}
+
+/* Job styles */
+.job {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.job:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.job h3 {
+    font-size: 1.5rem;
+    color: #3da9f1;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.job h3:hover {
+    color: #ffd700;
+}
+
+.company {
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.job ul {
+    margin-left: 20px;
+    font-size: 1rem;
+    color: #666;
+}
+
+.job ul li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.job ul li::before {
+    content: "–";
+    position: absolute;
+    left: 0;
+    color: #3da9f1;
+}
+
+.job ul li:hover::before {
+    color: #ffd700;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleUp {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes topToBottom {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in {
+    animation: slideIn 0.6s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .resume-container {
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+        animation: none;
+    }
+
+    .profile-header, .contact, .social {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .main-content {
+        margin-left: 0;
+        animation: fadeIn 1s ease-out;
+    }
+}
+
+@media (max-width: 600px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .name {
+        font-size: 1.8rem;
+    }
+
+    .job-title {
+        font-size: 1rem;
+    }
+
+    .job h3 {
+        font-size: 1.3rem;
+    }
+
+    .section {
+        margin-bottom: 30px;
+    }
+}
+
+/* Background gradient */
+.background-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #91bcf1, #3da9f1);
+    z-index: -1;
+    animation: gradientShift 10s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background: linear-gradient(135deg, #91bcf1, #3da9f1);
+    }
+    50% {
+        background: linear-gradient(135deg, #3da9f1, #91bcf1);
+    }
+    100% {
+        background: linear-gradient(135deg, #91bcf1, #3da9f1);
+    }
+}
+</style>
+</head>
+<body>
+    <div class="background-gradient"></div>
+    <div class="resume-container">
+        <div class="sidebar animate-slide-in">
+            <div class="profile-header">
+                <h1 class="name">John Doe</h1>
+                <p class="job-title">Software Engineer</p>
+            </div>
+
+            <div class="contact">
+                <p><span class="icon">&#9742;</span> (123) 456-7890</p>
+                <p><span class="icon">&#9993;</span> john.doe@example.com</p>
+                <p><span class="icon">&#127758;</span> linkedin.com/in/johndoe</p>
+            </div>
+
+            <div class="social">
+                <p><span class="icon">&#128187;</span> github.com/johndoe</p>
+            </div>
+        </div>
+
+        <div class="main-content animate-fade-in">
+            <section class="section">
+                <h2>Summary</h2>
+                <p>
+                    Highly motivated software engineer with 5+ years of experience in full-stack development. Expertise in JavaScript, Python, and cloud technologies. Proven ability to lead projects and deliver innovative solutions. Passionate about building scalable applications and improving team efficiency.
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>Skills</h2>
+                <ul class="skills-list">
+                    <li>Programming Languages: JavaScript, Python, Java, C++</li>
+                    <li>Web Development: HTML, CSS, React, Node.js, Express</li>
+                    <li>Cloud Computing: AWS, Azure, GCP</li>
+                    <li>Database Management: MySQL, MongoDB, PostgreSQL</li>
+                    <li>Version Control: Git, GitHub, GitLab</li>
+                    <li>Tools: Docker, Jenkins, Kubernetes</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Experience</h2>
+                <div class="job">
+                    <h3>Software Engineer</h3>
+                    <p class="company">ABC Tech Solutions | Jan 2020 - Present</p>
+                    <ul>
+                        <li>Led the development of scalable web applications using React and Node.js.</li>
+                        <li>Collaborated with cross-functional teams to deploy cloud-based solutions on AWS.</li>
+                        <li>Optimized database performance, reducing query response time by 25%.</li>
+                    </ul>
+                </div>
+                <div class="job">
+                    <h3>Junior Developer</h3>
+                    <p class="company">XYZ Innovations | Jun 2017 - Dec 2019</p>
+                    <ul>
+                        <li>Developed client-side features using JavaScript, HTML, and CSS for web applications.</li>
+                        <li>Improved system performance by refactoring legacy code and implementing modern frameworks.</li>
+                        <li>Assisted in deploying applications to cloud environments (AWS and Azure).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Education</h2>
+                <p>Bachelor of Technology in Computer Science | University of Excellence | 2013 - 2017</p>
+            </section>
+
+            <section class="section">
+                <h2>Certifications</h2>
+                <ul class="certifications-list">
+                    <li>AWS Certified Solutions Architect - 2021</li>
+                    <li>Certified Kubernetes Administrator - 2020</li>
+                    <li>JavaScript Algorithms and Data Structures Certification (freeCodeCamp) - 2019</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

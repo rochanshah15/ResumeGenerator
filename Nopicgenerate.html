@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/nopicgenerate.css">
+    <script src="static/nopicgenerate.js"></script>
+</head>
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12 text-center mb-4">
+                <h1>Resume Generator</h1>
+                <p class="text-muted">Fill in your details to generate an ATS-friendly resume</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <form id="resumeForm" class="needs-validation" novalidate>
+                    <!-- Personal Information -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Personal Information</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullName" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="jobTitle" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="jobTitle" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="phone" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="linkedin" class="form-label">LinkedIn URL</label>
+                                    <input type="url" class="form-control" id="linkedin">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Professional Summary</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="summary" rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Skills</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <textarea class="form-control" id="skills" rows="3" placeholder="Enter your skills separated by commas" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4>Experience</h4>
+                            <button type="button" class="btn btn-primary btn-sm" id="addExperience">Add Experience</button>
+                        </div>
+                        <div class="card-body" id="experienceContainer">
+                            <div class="experience-entry mb-3">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Job Title</label>
+                                        <input type="text" class="form-control job-title" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Company</label>
+                                        <input type="text" class="form-control company" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Start Date</label>
+                                        <input type="month" class="form-control start-date" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">End Date</label>
+                                        <input type="month" class="form-control end-date">
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input current-job" type="checkbox">
+                                            <label class="form-check-label">Current Job</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="form-label">Responsibilities</label>
+                                        <textarea class="form-control responsibilities" rows="3" placeholder="Enter key responsibilities and achievements" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4>Education</h4>
+                            <button type="button" class="btn btn-primary btn-sm" id="addEducation">Add Education</button>
+                        </div>
+                        <div class="card-body" id="educationContainer">
+                            <div class="education-entry mb-3">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Degree</label>
+                                        <input type="text" class="form-control degree" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Institution</label>
+                                        <input type="text" class="form-control institution" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Graduation Year</label>
+                                        <input type="number" class="form-control graduation-year" min="1900" max="2099" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mb-5">
+                        <button type="submit" class="btn btn-primary btn-lg">Generate Resume</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Resume Preview Modal -->
+        <div class="modal fade" id="resumePreviewModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Resume Preview</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="resumePreview">
+                        <!-- Resume content will be inserted here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="downloadResume">Download PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
