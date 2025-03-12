@@ -39,7 +39,6 @@ NextLevelResume/
 ## Future Enhancements
 - **AI Integration:** Extend resume generation by integrating the Gemini API for AI-driven resume suggestions.
 - **User Authentication:** Enable users to save and manage multiple resumes.
-- **PDF Export:** Add functionality to export resumes directly as PDFs.
 
 ## Contributing
 If you want to contribute, feel free to fork the repository and submit a pull request.
